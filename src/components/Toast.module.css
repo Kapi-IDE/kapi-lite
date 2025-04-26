@@ -1,0 +1,55 @@
+.toast {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%) translateY(100px);
+  background-color: var(--background-secondary);
+  color: var(--text-primary);
+  padding: 12px 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  display: flex;
+  align-items: center;
+  z-index: 9999;
+  opacity: 0;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+  max-width: 90%;
+  width: auto;
+  border-left: 4px solid var(--accent-coral);
+}
+
+.toast.visible {
+  transform: translateX(-50%) translateY(0);
+  opacity: 1;
+}
+
+.content {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.icon {
+  font-size: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.message {
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.success {
+  border-left-color: var(--accent-green, #78FFA7);
+}
+
+.error {
+  border-left-color: var(--accent-coral, #e88b74);
+}
+
+.info {
+  border-left-color: var(--accent-blue, #78AAFF);
+}
+

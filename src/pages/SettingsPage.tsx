@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { AVAILABLE_MODELS, getModelForProvider } from '../utils/langchainConfig';
 import styles from './SettingsPage.module.css';
+import Toast from "../components/Toast";
 
 interface ProviderConfig {
   name: string;
@@ -43,6 +44,8 @@ const SettingsPage: React.FC = () => {
   const [apiKeys, setApiKeys] = useState<Record<string, string>>({});
   const [selectedFolders, setSelectedFolders] = useState<string[]>([]);
   const [chatMemory, setChatMemory] = useState<number>(5);
+  const [toastVisible, setToastVisible] = useState(false);
+  const [toastMessage, setToastMessage] = useState("");
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -79,7 +82,14 @@ const SettingsPage: React.FC = () => {
       chatMemory
     };
     localStorage.setItem('kapi_settings', JSON.stringify(settings));
+
+    setToastMessage("Settings saved successfully");
+    setToastVisible(true);
   };
+
+  const handleCloseToast = () => {
+    setToastVisible(false);
+  }
 
   const handleSelectFolder = () => {
     if (fileInputRef.current) {
@@ -104,6 +114,13 @@ const SettingsPage: React.FC = () => {
 
   return (
     <div className={styles.container}>
+
+      <Toast
+        message={toastMessage}
+        visible={toastVisible}
+        onClose={handleCloseToast}
+        type="success"
+      />
       <div className={styles.content}>
         <div className={styles.header}>
           <Link to="/" className={styles.homeLink}>← Back to Home</Link>
