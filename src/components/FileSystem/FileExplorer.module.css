@@ -1,0 +1,125 @@
+.fileExplorer {
+  background-color: var(--background-color);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 300px;
+  overflow: hidden;
+}
+
+.toolbar {
+  padding: 0.5rem;
+  display: flex;
+  gap: 0.5rem;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.selectButton, .navButton {
+  padding: 0.5rem 1rem;
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  background-color: var(--background-color);
+  color: var(--text-color);
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: all 0.2s ease;
+}
+
+.selectButton:hover, .navButton:hover {
+  background-color: var(--hover-color);
+}
+
+.error {
+  padding: 0.5rem;
+  margin: 0.5rem;
+  background-color: rgba(255, 0, 0, 0.1);
+  border: 1px solid rgba(255, 0, 0, 0.3);
+  border-radius: 4px;
+  color: #ff3333;
+}
+
+.allowedDirs {
+  padding: 0.5rem;
+}
+
+.allowedDirs h3 {
+  margin-bottom: 0.5rem;
+  font-size: 1rem;
+}
+
+.allowedDir {
+  padding: 0.5rem;
+  cursor: pointer;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.allowedDir:hover {
+  background-color: var(--hover-color);
+}
+
+.loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100px;
+  color: var(--text-secondary);
+}
+
+.contents {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.pathBar {
+  padding: 0.5rem;
+  border-bottom: 1px solid var(--border-color);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+}
+
+.fileList {
+  flex: 1;
+  overflow-y: auto;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.fileItem {
+  padding: 0.5rem;
+  cursor: pointer;
+  border-radius: 4px;
+  margin: 0.1rem 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.fileItem:hover {
+  background-color: var(--hover-color);
+}
+
+.directory {
+  font-weight: 500;
+}
+
+.emptyDir {
+  padding: 2rem;
+  text-align: center;
+  color: var(--text-secondary);
+  font-style: italic;
+}
+
+.folderIcon, .fileIcon, .codeIcon, .imageIcon, .docIcon {
+  font-size: 1.2rem;
+}

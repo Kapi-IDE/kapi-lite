@@ -1,0 +1,140 @@
+.left-panel {
+  width: 280px;
+  height: calc(100vh - 48px);
+  display: flex;
+  flex-direction: column;
+  background-color: var(--background-secondary);
+  border-right: 1px solid var(--border-color);
+  overflow-y: hidden;
+  position: absolute;
+  top: 48px;
+  left: 0;
+  z-index: 10;
+}
+
+.left-panel-header {
+  padding: 12px;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.left-panel-chats {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 12px;
+  overflow-y: auto;
+}
+
+.new-chat-button {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 8px 12px;
+  background-color: var(--accent-coral);
+  color: var(--background-primary);
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.new-chat-button:hover {
+  background-color: var(--accent-coral);
+  opacity: 0.9;
+}
+
+.icon {
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.chat-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  color: var(--text-primary);
+  transition: background-color 0.2s ease;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.chat-item:hover, .chat-item.active {
+  background-color: var(--background-tertiary);
+  color: var(--accent-coral);
+}
+
+.chat-title {
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.delete-chat-button {
+  background: none;
+  border: none;
+  color: var(--text-secondary);
+  font-size: 16px;
+  cursor: pointer;
+  margin-left: 8px;
+  opacity: 0.7;
+  transition: opacity 0.2s;
+}
+
+.delete-chat-button:hover {
+  opacity: 1;
+  color: var(--accent-coral);
+}
+
+.no-chats-message {
+  color: var(--text-tertiary);
+  font-size: 13px;
+  text-align: center;
+  margin-top: 16px;
+}
+
+.left-panel-footer {
+  padding: 12px;
+  border-top: 1px solid var(--border-color);
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.user-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background-color: var(--accent-coral);
+  color: var(--background-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 500;
+  font-size: 14px;
+}
+
+.user-details {
+  display: flex;
+  flex-direction: column;
+}
+
+.user-name {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-primary);
+}
+
+.user-plan {
+  font-size: 12px;
+  color: var(--text-tertiary);
+}

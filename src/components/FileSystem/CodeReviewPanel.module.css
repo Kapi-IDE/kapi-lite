@@ -1,0 +1,141 @@
+.codeReviewPanel {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--background-color);
+  color: var(--text-color);
+}
+
+.sectionTitle {
+  font-size: 1.2rem;
+  margin-bottom: 0.5rem;
+  padding: 0.5rem;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.splitView {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+}
+
+.fileExplorerContainer {
+  width: 300px;
+  border-right: 1px solid var(--border-color);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.codeContainer {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.codeContent {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+}
+
+.codeHeader {
+  padding: 0.5rem 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.fileName {
+  font-size: 1.1rem;
+  margin: 0;
+}
+
+.reviewButton, .saveButton {
+  padding: 0.5rem 1rem;
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  background-color: var(--primary-color);
+  color: white;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: all 0.2s ease;
+}
+
+.reviewButton:hover, .saveButton:hover {
+  background-color: var(--primary-hover);
+}
+
+.saveButton {
+  background-color: #4caf50;
+}
+
+.saveButton:hover {
+  background-color: #45a049;
+}
+
+.error {
+  padding: 0.5rem 1rem;
+  margin: 0.5rem;
+  background-color: rgba(255, 0, 0, 0.1);
+  border: 1px solid rgba(255, 0, 0, 0.3);
+  border-radius: 4px;
+  color: #ff3333;
+}
+
+.loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100px;
+  color: var(--text-secondary);
+  padding: 2rem;
+}
+
+.noFileSelected {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  color: var(--text-secondary);
+  padding: 2rem;
+  text-align: center;
+}
+
+.codePre {
+  flex: 1;
+  margin: 0;
+  padding: 1rem;
+  overflow: auto;
+  background-color: var(--code-bg);
+  border-radius: 4px;
+  font-family: monospace;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  white-space: pre-wrap;
+}
+
+.codeBlock {
+  display: block;
+}
+
+.reviewContent {
+  flex: 1;
+  overflow: auto;
+  padding: 1rem;
+}
+
+.reviewContent h3 {
+  margin-top: 0;
+  margin-bottom: 1rem;
+}
+
+.reviewContent pre {
+  white-space: pre-wrap;
+  font-family: inherit;
+  background-color: transparent;
+  padding: 0;
+}

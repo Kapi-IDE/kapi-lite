@@ -1,0 +1,127 @@
+:root {
+  --background-primary: #1a1a1a;
+  --background-secondary: #242424;
+  --background-tertiary: #2d2d2d;
+  --text-primary: #ffffff;
+  --text-secondary: #cccccc;
+  --text-tertiary: #999999;
+  --accent-purple: #9C78FF;
+  --accent-coral: #e88b74;
+  --accent-blue: #78AAFF;
+  --accent-green: #78FFA7;
+  --border-color: #3d3d3d;
+
+  /* Additional variables for chat page */
+  --primary-color: var(--accent-coral);
+  --primary-hover: #d87c65;
+  --hover-color: var(--background-tertiary);
+  --selected-color: #3a3a3a;
+  --selected-text-color: var(--accent-coral);
+  --message-bg: var(--background-secondary);
+  --input-bg: var(--background-secondary);
+  --accent-color: var(--accent-coral);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica,
+    Arial, sans-serif;
+  background-color: var(--background-primary);
+  color: var(--text-primary);
+  height: 100vh;
+  overflow: hidden;
+}
+
+#root {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.app-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+/* Home Page Styles */
+.home-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  padding: 0 16px;
+}
+
+.welcome-section {
+  width: 100%;
+  max-width: 640px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.spark-icon {
+  font-size: 24px;
+  margin-bottom: 16px;
+  color: var(--accent-coral);
+}
+
+.welcome-heading {
+  font-size: 48px;
+  font-weight: 400;
+  margin-bottom: 40px;
+  color: var(--text-primary);
+}
+
+.home-input {
+  width: 100%;
+  margin-bottom: 40px;
+}
+
+.quick-actions {
+  display: flex;
+  gap: 16px;
+  margin-top: 20px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.action-button {
+  display: flex;
+  align-items: center;
+  padding: 8px 16px;
+  background-color: var(--background-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  color: var(--text-primary);
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.action-button:hover {
+  background-color: var(--background-tertiary);
+}
+
+.action-button .icon {
+  margin-right: 8px;
+}
+
+.action-button .new-tag {
+  font-size: 10px;
+  background-color: var(--accent-blue);
+  color: var(--background-primary);
+  padding: 2px 4px;
+  border-radius: 4px;
+  margin-left: 8px;
+}
+
+/* Chat Page Styles have been moved to module CSS files */

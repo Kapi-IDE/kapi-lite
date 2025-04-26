@@ -1,0 +1,84 @@
+{
+  "name": "kapi-lite",
+  "productName": "Kapi Lite",
+  "version": "0.1.0",
+  "description": "Simplified Electron app with Vite",
+  "author": {
+    "name": "Balaji Viswanathan"
+  },
+  "main": "dist-electron/main.js",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build && electron-builder --dir",
+    "build:prod": "vite build && electron-builder",
+    "preview": "vite preview",
+    "dist": "electron-builder",
+    "dist:win": "electron-builder --win",
+    "dist:linux": "electron-builder --linux",
+    "dist:mac": "electron-builder --mac"
+  },
+  "build": {
+    "appId": "com.kapi-lite.app",
+    "files": [
+      "dist/**/*",
+      "dist-electron/**/*"
+    ],
+    "directories": {
+      "output": "release",
+      "buildResources": "build"
+    },
+    "mac": {
+      "icon": "build/icon.icns",
+      "target": [
+        {
+          "target": "dmg",
+          "arch": [
+            "arm64",
+            "x64"
+          ]
+        },
+        {
+          "target": "zip",
+          "arch": [
+            "arm64",
+            "x64"
+          ]
+        }
+      ]
+    },
+    "win": {
+      "icon": "build/icon.ico"
+    },
+    "linux": {
+      "icon": "build/icon.png"
+    },
+    "asar": true,
+    "asarUnpack": [
+      "dist/**/*.{png,jpg,jpeg,gif,svg,ico}"
+    ]
+  },
+  "dependencies": {
+    "@google/genai": "^0.10.0",
+    "@heroicons/react": "^2.2.0",
+    "@langchain/anthropic": "^0.1.21",
+    "@langchain/community": "^0.0.34",
+    "@langchain/core": "^0.3.48",
+    "@langchain/google-genai": "^0.0.10",
+    "@langchain/groq": "^0.2.2",
+    "@langchain/openai": "^0.5.7",
+    "electron-squirrel-startup": "^1.0.1",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-router-dom": "^6.19.0"
+  },
+  "devDependencies": {
+    "@types/react": "^18.2.21",
+    "@types/react-dom": "^18.2.7",
+    "@vitejs/plugin-react": "^4.0.4",
+    "electron": "^26.1.0",
+    "electron-builder": "^24.13.3",
+    "typescript": "^5.2.2",
+    "vite": "^4.4.9",
+    "vite-plugin-electron": "^0.14.0"
+  }
+}

@@ -1,0 +1,359 @@
+.app-logo {
+  display: block;
+  object-fit: contain;
+  transition: transform 0.3s ease;
+  margin: 0 auto;
+}
+
+.app-logo:hover {
+  transform: scale(1.05);
+}
+
+.home-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 2rem;
+  background-color: var(--background-primary);
+}
+
+.welcome-section {
+  text-align: center;
+  max-width: 800px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.input-container {
+  position: relative;
+  width: 100%;
+  max-width: 720px;
+  margin: 32px 0;
+  background-color: var(--background-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  transition: all 0.2s ease;
+}
+
+.input-container:focus-within {
+  border-color: var(--accent-coral);
+  box-shadow: 0 4px 12px rgba(232, 139, 116, 0.2);
+}
+
+.message-input {
+  width: 100%;
+  padding: 16px;
+  border: none;
+  background-color: transparent;
+  color: var(--text-primary);
+  font-size: 16px;
+  font-family: inherit;
+  resize: none;
+  min-height: 60px;
+  max-height: 200px;
+  outline: none;
+  border-bottom: 1px solid var(--border-color);
+  line-height: 1.5;
+  transition: all 0.2s ease;
+}
+
+.message-input::placeholder {
+  color: var(--text-tertiary);
+}
+
+.input-footer {
+  display: flex;
+  align-items: center;
+  padding: 8px 16px;
+  justify-content: space-between;
+  border-bottom-left-radius: 12px;
+  border-bottom-right-radius: 12px;
+  background-color: var(--background-secondary);
+}
+
+.model-controls {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  position: relative;
+  z-index: 1000;
+}
+
+.attach-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 4px;
+  color: var(--text-secondary);
+}
+
+.attach-button:hover {
+  background-color: var(--background-tertiary);
+}
+
+.dropdown-container {
+  position: relative;
+  z-index: 1;
+}
+
+.dropdown-container:hover {
+  z-index: 2;
+}
+
+.provider-button,
+.model-button {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 12px;
+  background: var(--background-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  cursor: pointer;
+  color: var(--text-primary);
+  font-size: 14px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  min-height: 36px;
+}
+
+.chevron-icon {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+  margin-left: 4px;
+  color: var(--text-secondary);
+  transition: transform 0.2s ease;
+}
+
+.provider-button {
+  min-width: 120px;
+  max-width: 140px;
+}
+
+.model-button {
+  min-width: 200px;
+  max-width: 250px;
+}
+
+.provider-button:hover,
+.model-button:hover {
+  background-color: var(--background-tertiary);
+}
+
+.provider-dropdown,
+.model-dropdown {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  background: var(--background-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  z-index: 9999;
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.provider-dropdown {
+  min-width: 120px;
+  width: 100%;
+}
+
+.model-dropdown {
+  min-width: 200px;
+  width: 100%;
+}
+
+.provider-option,
+.model-option {
+  padding: 8px 12px;
+  cursor: pointer;
+  color: var(--text-primary);
+  font-size: 14px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-align: left;
+  transition: background-color 0.2s ease;
+  min-height: 36px;
+  display: flex;
+  align-items: center;
+  user-select: none;
+  position: relative;
+  z-index: 10000;
+}
+
+.provider-option:hover,
+.model-option:hover {
+  background-color: var(--background-tertiary);
+}
+
+.provider-option.selected,
+.model-option.selected {
+  background-color: var(--background-tertiary);
+  color: var(--accent-coral);
+}
+
+/* Add scrollbar styling for dropdowns */
+.provider-dropdown::-webkit-scrollbar,
+.model-dropdown::-webkit-scrollbar {
+  width: 6px;
+}
+
+.provider-dropdown::-webkit-scrollbar-track,
+.model-dropdown::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.provider-dropdown::-webkit-scrollbar-thumb,
+.model-dropdown::-webkit-scrollbar-thumb {
+  background-color: var(--border-color);
+  border-radius: 3px;
+}
+
+/* For Firefox */
+.provider-dropdown,
+.model-dropdown {
+  scrollbar-width: thin;
+  scrollbar-color: var(--border-color) transparent;
+}
+
+.logo-container {
+  margin-bottom: 24px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.version-display {
+  position: fixed;
+  bottom: 10px;
+  left: 10px;
+  font-size: 12px;
+  color: var(--text-tertiary);
+  opacity: 0.7;
+}
+
+.logo {
+  width: 200px;
+  height: auto;
+  object-fit: contain;
+}
+
+.local-tag {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  font-size: 12px;
+  background-color: var(--accent-green, #4CAF50);
+  color: var(--background-primary);
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.local-model {
+  border-left: 2px solid var(--accent-green, #4CAF50);
+}
+
+.loading-models {
+  padding: 8px 12px;
+  color: var(--text-secondary);
+  font-size: 0.9em;
+  text-align: center;
+  border-top: 1px solid var(--border-color);
+}
+
+.left-controls,
+.right-controls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.new-tag {
+  font-size: 10px;
+  padding: 2px 6px;
+  background-color: var(--accent-blue);
+  color: var(--background-primary);
+  border-radius: 12px;
+  margin-left: 8px;
+}
+
+.submit-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border: none;
+  border-radius: 8px;
+  background-color: var(--accent-coral);
+  color: var(--background-primary);
+  font-size: 16px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-weight: bold;
+}
+
+.submit-button:hover:not(:disabled) {
+  background-color: var(--accent-coral);
+  transform: translateY(-2px);
+  box-shadow: 0 2px 4px rgba(232, 139, 116, 0.3);
+}
+
+.submit-button:active:not(:disabled) {
+  transform: translateY(0);
+  box-shadow: none;
+}
+
+.submit-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.quick-actions {
+  display: flex;
+  gap: 16px;
+  margin-top: 24px;
+  flex-wrap: wrap;
+  justify-content: center;
+  width: 100%;
+  max-width: 720px;
+}
+
+/* For action buttons styling */
+.action-button {
+  display: flex;
+  align-items: center;
+  padding: 10px 20px;
+  background-color: var(--background-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  color: var(--text-primary);
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  gap: 8px;
+}
+
+.action-button:hover {
+  background-color: var(--background-tertiary);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.action-button .icon {
+  margin-right: 8px;
+}

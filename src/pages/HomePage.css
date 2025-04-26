@@ -1,0 +1,56 @@
+/* Additional global styles for HomePage */
+
+.icon-button {
+  background: none;
+  border: none;
+  color: var(--text-secondary);
+  font-size: 16px;
+  padding: 8px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+}
+
+.icon-button:hover {
+  background-color: var(--background-tertiary);
+}
+
+.welcome-heading {
+  font-size: 2.5rem;
+  font-weight: 400;
+  margin-bottom: 1.5rem;
+  color: var(--text-primary);
+}
+
+.spark-icon {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+  color: var(--accent-coral);
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% {
+    opacity: 0.7;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0.7;
+  }
+}
+
+/* Override for the module CSS if needed */
+.new-tag {
+  font-size: 10px;
+  padding: 2px 6px;
+  background-color: var(--accent-blue);
+  color: var(--background-primary);
+  border-radius: 12px;
+  margin-left: 8px;
+  font-weight: bold;
+}

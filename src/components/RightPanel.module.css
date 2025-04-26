@@ -1,0 +1,97 @@
+.right-panel {
+  width: 300px;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--background-secondary);
+  border-left: 1px solid var(--border-color);
+  overflow: hidden;
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 10;
+  transition: width 0.15s ease;
+}
+
+.resize-handle {
+  position: absolute;
+  top: 0;
+  left: -5px;
+  width: 10px;
+  height: 100%;
+  cursor: col-resize;
+  z-index: 20;
+}
+
+.resize-handle:hover,
+.resize-handle:active {
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
+.right-panel-header {
+  padding: 12px;
+  border-bottom: 1px solid var(--border-color);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.code-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.code-action {
+  background: none;
+  border: none;
+  color: var(--text-secondary);
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 4px;
+  transition: background-color 0.2s ease;
+}
+
+.code-action:hover {
+  background-color: var(--background-tertiary);
+  color: var(--text-primary);
+}
+
+.right-panel-content {
+  flex: 1;
+  padding: 12px;
+  overflow-y: auto;
+}
+
+.code-container {
+  background-color: var(--background-tertiary);
+  border-radius: 8px;
+  padding: 12px;
+  overflow-x: auto;
+}
+
+.code-container pre {
+  margin: 0;
+  font-family: 'Menlo', 'Monaco', 'Courier New', monospace;
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--text-primary);
+  white-space: pre-wrap;
+}
+
+.svg-display {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 300px;
+  height: calc(100vh - 120px);
+  padding: 20px;
+  background-color: white;
+  border-radius: 8px;
+  overflow: auto;
+}
+
+.svg-display svg {
+  width: 100%;
+  height: auto;
+  max-height: none;
+}
