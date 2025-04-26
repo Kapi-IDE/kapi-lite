@@ -8,7 +8,7 @@
 
 ## Vision
 
-Kapi Lite is revolutionizing the way developers interact with their code. By bringing advanced AI capabilities directly into your development workflow, we're creating a more intuitive, efficient, and enlightening coding experience. Think of it as having a senior developer, technical architect, and coding mentor - all rolled into one intelligent companion.
+Kapi Lite is a simple light weight version of our main product, that is aimed at revolutionizing the way developers interact with their code. By bringing advanced AI capabilities directly into your development workflow, we want to create a more intuitive, efficient, and enlightening coding experience. Think of it as having a senior developer, technical architect, and coding mentor - all rolled into one intelligent companion.
 
 ### 🌟 Key Features
 
@@ -97,12 +97,6 @@ We welcome contributions! Whether it's:
 - 🎨 UI/UX improvements
 
 Check our [Contributing Guidelines](CONTRIBUTING.md) to get started.
-
-## License
-
-MIT License - See [LICENSE](LICENSE) for details.
-
----
 
 <div align="center">
   <p>Built with ❤️ by the Kapi IDE Team</p>
