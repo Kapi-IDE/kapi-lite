@@ -6,6 +6,7 @@ import SettingsPage from './pages/SettingsPage';
 import { migrateFromLocalStorage, clearLocalStorageAfterMigration } from './utils/migrationUtils';
 import indexedDBService from './services/indexedDBService';
 import migrationStyles from './styles/Migration.module.css';
+import { ChatProvider } from './contexts/ChatContext';
 
 const App: React.FC = () => {
   const [isMigrating, setIsMigrating] = useState(false);
@@ -19,18 +20,18 @@ const App: React.FC = () => {
         // Initialize IndexedDB
         await indexedDBService.init();
         setDbReady(true);
-        
+
         // Check if we need to migrate data
         if (!localStorage.getItem('kapi_migration_completed')) {
           setIsMigrating(true);
           const migrationSuccess = await migrateFromLocalStorage();
-          
+
           if (migrationSuccess) {
             // Clean up localStorage after successful migration
             // Only remove the old conversations data, keep the migration flag
             clearLocalStorageAfterMigration();
           }
-          
+
           setIsMigrating(false);
           setMigrationComplete(true);
         } else {
@@ -62,15 +63,17 @@ const App: React.FC = () => {
     );
   }
   return (
-    <Router>
-      <div className="app-container">
-        <Routes>
-          <Route path="/" element={<HomePage />} />
-          <Route path="/chat" element={<ChatPage />} />
-          <Route path="/settings" element={<SettingsPage />} />
-        </Routes>
-      </div>
-    </Router>
+    <ChatProvider>
+      <Router>
+        <div className="app-container">
+          <Routes>
+            <Route path="/" element={<HomePage />} />
+            <Route path="/chat" element={<ChatPage />} />
+            <Route path="/settings" element={<SettingsPage />} />
+          </Routes>
+        </div>
+      </Router>
+    </ChatProvider>
   );
 };
 
