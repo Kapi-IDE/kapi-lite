@@ -2,9 +2,9 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styles from './HomePage.module.css';
 import './HomePage.css'; // For additional global styles
-import { 
-  AVAILABLE_MODELS, 
-  fetchOllamaModels, 
+import {
+  AVAILABLE_MODELS,
+  fetchOllamaModels,
   type SupportedModel,
   saveSelectedModel,
   saveSelectedProvider,
@@ -26,10 +26,7 @@ const HomePage: React.FC = () => {
   const [isModelMenuOpen, setIsModelMenuOpen] = useState(false);
   const [isProviderMenuOpen, setIsProviderMenuOpen] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [isLoadingOllama, setIsLoadingOllama] = useState(true);
-  const hasLoadedOllama = useRef(false);
-
-  // Filter models based on selected provider
+  // Fetch Ollama models and load saved model on component mount selected provider
   const modelsForProvider = allModels.filter(model => model.provider === selectedProvider);
 
   // Update model selection when provider changes, but only if current model isn't from this provider
@@ -44,33 +41,33 @@ const HomePage: React.FC = () => {
 
   // Fetch Ollama models on component mount
   useEffect(() => {
-    const loadOllamaModels = async () => {
-      if (hasLoadedOllama.current) return;
-      hasLoadedOllama.current = true;
-
+    const loadModels = async () => {
       try {
         const ollamaModels = await fetchOllamaModels();
         setAllModels([...AVAILABLE_MODELS, ...ollamaModels]);
+
+        // Load saved model or set default
+        const savedModel = loadSelectedModel();
+        if (savedModel) {
+          setSelectedModel(savedModel);
+        } else {
+          const defaultModel = AVAILABLE_MODELS[0];
+          setSelectedModel(defaultModel);
+          saveSelectedModel(defaultModel.id);
+          saveSelectedProvider(defaultModel.provider);
+        }
       } catch (error) {
-        console.error('Failed to load Ollama models:', error);
-      } finally {
-        setIsLoadingOllama(false);
+        console.error('Error loading models:', error);
+        setAllModels(AVAILABLE_MODELS);
       }
     };
 
-    loadOllamaModels();
+    loadModels();
   }, []);
 
   const startNewChat = async () => {
     if (inputValue.trim() && !isSubmitting) {
       setIsSubmitting(true);
-
-      // Store the message to localStorage
-      const messageData = {
-        model: selectedModel,
-        initialMessage: inputValue.trim(),
-        timestamp: Date.now()
-      };
 
       try {
         // Save latest model and provider to localStorage for consistency
@@ -78,16 +75,31 @@ const HomePage: React.FC = () => {
           saveSelectedModel(selectedModel.id);
           saveSelectedProvider(selectedModel.provider);
         }
-        
+
+        // Clean up any existing message data
+        localStorage.removeItem('kapi_initialMessage');
+        localStorage.removeItem('kapi_last_processed_timestamp');
+
+        // Store the message with current timestamp
+        const timestamp = Date.now();
+        const messageData = {
+          model: selectedModel,
+          initialMessage: inputValue.trim(),
+          timestamp: timestamp
+        };
+
         // Make sure we're storing valid JSON
         localStorage.setItem('kapi_initialMessage', JSON.stringify(messageData));
-        console.log('Stored initial message:', messageData);
-
-        // Short delay to ensure localStorage is updated
-        await new Promise(resolve => setTimeout(resolve, 50));
+        console.log('Starting new chat with model:', selectedModel?.name);
 
         // Navigate to chat page
         navigate('/chat');
+
+        // Short delay to ensure navigation is complete
+        await new Promise(resolve => setTimeout(resolve, 100));
+
+        // Reload the page to ensure fresh state
+        window.location.reload();
       } catch (error) {
         console.error('Error storing initial message:', error);
         setIsSubmitting(false);
@@ -161,13 +173,7 @@ const HomePage: React.FC = () => {
     // Implementation of handleAttachFile
   };
 
-  // Helper function to focus the textarea
-  const focusTextarea = (text: string) => {
-    setInputValue(text);
-    if (textareaRef.current) {
-      textareaRef.current.focus();
-    }
-  };
+  // Removed unused focusTextarea function
 
   return (
     <div className={styles['home-container']}>
@@ -232,16 +238,16 @@ const HomePage: React.FC = () => {
                           }`}
                           onClick={(e) => {
                             e.stopPropagation();
-                            
+
                             // Don't change provider if it's already selected
                             if (selectedProvider === provider) {
                               setIsProviderMenuOpen(false);
                               return;
                             }
-                            
+
                             setSelectedProvider(provider);
                             saveSelectedProvider(provider);
-                            
+
                             // When provider changes, we'll find appropriate model in the useEffect
                             setIsProviderMenuOpen(false);
                           }}
@@ -279,13 +285,13 @@ const HomePage: React.FC = () => {
                         e.stopPropagation();
                         setSelectedModel(model);
                         saveSelectedModel(model.id);
-                        
+
                           // Update provider if it doesn't match
                             if (selectedProvider !== model.provider) {
                               setSelectedProvider(model.provider);
                               saveSelectedProvider(model.provider);
                             }
-                            
+
                             setIsModelMenuOpen(false);
                           }}
                       >
@@ -311,21 +317,48 @@ const HomePage: React.FC = () => {
         <div className={styles['quick-actions']}>
           <button
             className={styles['action-button']}
-            onClick={() => focusTextarea('Create a modern website mockup  in SVG format for the homepage of a fictional digital-first bank named "NovaBank". The design should be clean and contemporary, using a flat, minimalistic style that is both friendly and professional. Utilize a soft, pastel color palette: sky blue (#76C7F0), mint green (#A8E6CF), soft white (#FFFFFF), and light gray (#E0E0E0). Incorporate rounded shapes and smooth curves with a consistent stroke width of approximately 2px for all elements. The central focus should be a sleek smartphone displaying a simplified banking app interface (showing balance overview and a send money button). Surround this with icons such as a shield (for security), an upward graph (for investments), a hand holding a credit card (for digital payments), and a globe (for global banking access). Add subtle decorative elements like floating dollar coins and leaf icons to symbolize "growth". The composition should have the smartphone as the central focus, with supporting icons arranged in a semi-circle around it, ensuring ample white space for a breathable layout. The output should be in SVG format, scalable to 1920px width without pixelation, with each major element (phone, shield, graph, etc.) in a separate <g> group with descriptive id attributes. Ensure no embedded raster images are used, only pure vector shapes, optimized for web with simple paths and minimal nesting.')}
+            onClick={async () => {
+              const mockupPrompt = 'Create a modern website mockup in SVG format for the homepage of a fictional digital-first bank named "NovaBank". The design should be clean and contemporary, using a flat, minimalistic style that is both friendly and professional. Utilize a soft, pastel color palette: sky blue (#76C7F0), mint green (#A8E6CF), soft white (#FFFFFF), and light gray (#E0E0E0). Incorporate rounded shapes and smooth curves with a consistent stroke width of approximately 2px for all elements. The central focus should be a sleek smartphone displaying a simplified banking app interface (showing balance overview and a send money button). Surround this with icons such as a shield (for security), an upward graph (for investments), a hand holding a credit card (for digital payments), and a globe (for global banking access). Add subtle decorative elements like floating dollar coins and leaf icons to symbolize "growth". The composition should have the smartphone as the central focus, with supporting icons arranged in a semi-circle around it, ensuring ample white space for a breathable layout. The output should be in SVG format, scalable to 1920px width without pixelation, with each major element (phone, shield, graph, etc.) in a separate <g> group with descriptive id attributes. Ensure no embedded raster images are used, only pure vector shapes, optimized for web with simple paths and minimal nesting.';
+              setInputValue(mockupPrompt);
+
+              // Short delay to ensure the input value is set
+              await new Promise(resolve => setTimeout(resolve, 50));
+
+              // Automatically start a new chat with this prompt
+              await startNewChat();
+            }}
           >
             <span className="icon">✏️</span>
             <span className="label">Mockup</span>
           </button>
           <button
             className={styles['action-button']}
-            onClick={() => focusTextarea('Help me code')}
+            onClick={async () => {
+              const codePrompt = 'Help me code';
+              setInputValue(codePrompt);
+
+              // Short delay to ensure the input value is set
+              await new Promise(resolve => setTimeout(resolve, 50));
+
+              // Automatically start a new chat with this prompt
+              await startNewChat();
+            }}
           >
             <span className="icon">&lt;/&gt;</span>
             <span className="label">Code</span>
           </button>
           <button
             className={styles['action-button']}
-            onClick={() => focusTextarea('CodeReview: Analyze this codebase for issues, bugs, and best practices')}
+            onClick={async () => {
+              const reviewPrompt = 'CodeReview: Analyze this codebase for issues, bugs, and best practices';
+              setInputValue(reviewPrompt);
+
+              // Short delay to ensure the input value is set
+              await new Promise(resolve => setTimeout(resolve, 50));
+
+              // Automatically start a new chat with this prompt
+              await startNewChat();
+            }}
           >
             <span className="icon">📚</span>
             <span className="label">Code Review</span>

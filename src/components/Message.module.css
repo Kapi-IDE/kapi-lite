@@ -1,0 +1,128 @@
+.message {
+  padding: 16px;
+  margin: 8px 0;
+  border-radius: 8px;
+  position: relative;
+}
+
+.userMessage {
+  background-color: var(--accent-coral);
+  margin-left: 20px;
+}
+
+.assistantMessage {
+  background-color: var(--background-tertiary);
+  margin-right: 20px;
+}
+
+.messageHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.role {
+  font-weight: 600;
+  font-size: 14px;
+  color: var(--text-secondary);
+}
+
+.actions {
+  display: flex;
+  gap: 8px;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.message:hover .actions {
+  opacity: 1;
+}
+
+.actionButton {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 14px;
+  padding: 2px 6px;
+  border-radius: 4px;
+  transition: background-color 0.2s ease;
+}
+
+.actionButton:hover {
+  background-color: var(--background-hover);
+}
+
+.messageContent {
+  font-size: 15px;
+  line-height: 1.5;
+  white-space: pre-wrap;
+  overflow-wrap: break-word;
+}
+
+.editContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.editTextarea {
+  width: 100%;
+  min-height: 100px;
+  padding: 8px;
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  font-family: inherit;
+  font-size: inherit;
+  resize: vertical;
+  background-color: var(--background-primary);
+  color: var(--text-primary);
+}
+
+.editActions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.cancelButton, .saveButton {
+  padding: 6px 12px;
+  border-radius: 4px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.cancelButton {
+  background: none;
+  border: 1px solid var(--border-color);
+  color: var(--text-secondary);
+}
+
+.saveButton {
+  background-color: var(--primary-color);
+  border: none;
+  color: white;
+}
+
+.forkMenuContainer {
+  position: relative;
+}
+
+/* Code block styling */
+.messageContent pre {
+  background-color: var(--code-background);
+  padding: 12px;
+  border-radius: 4px;
+  overflow-x: auto;
+}
+
+.messageContent code {
+  font-family: 'Menlo', 'Monaco', 'Courier New', monospace;
+  font-size: 0.9em;
+}
+
+/* SVG styling */
+.messageContent svg {
+  max-width: 100%;
+  height: auto;
+}

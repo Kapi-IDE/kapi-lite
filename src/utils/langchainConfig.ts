@@ -4,7 +4,7 @@ import { ChatAnthropic } from "@langchain/anthropic";
 import { ChatOllama } from "@langchain/community/chat_models/ollama";
 import { GoogleGenAI } from "@google/genai";
 
-export type GroqModelType = 
+export type GroqModelType =
   | "deepseek-r1-distill-llama-70b"
   | "llama-3.3-70b-versatile"
   | "meta-llama/llama-4-maverick-17b-128e-instruct";
@@ -21,19 +21,38 @@ export interface SupportedModel {
 export const fetchOllamaModels = async (): Promise<SupportedModel[]> => {
   try {
     const baseUrl = import.meta.env.VITE_OLLAMA_BASE_URL || "http://localhost:11434";
-    const response = await fetch(`${baseUrl}/api/tags`);
-    if (!response.ok) {
-      console.error("Failed to fetch Ollama models");
+
+    // Add a timeout to the fetch request
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 2000); // 2 second timeout
+
+    try {
+      const response = await fetch(`${baseUrl}/api/tags`, {
+        signal: controller.signal
+      });
+      clearTimeout(timeoutId);
+
+      if (!response.ok) {
+        console.error("Failed to fetch Ollama models");
+        return [];
+      }
+
+      const data = await response.json();
+      return data.models.map((model: { name: string }) => ({
+        id: `ollama-${model.name}`,
+        name: model.name,
+        provider: "ollama",
+        modelName: model.name,
+        description: "Ollama model"
+      }));
+    } catch (fetchError: unknown) {
+      clearTimeout(timeoutId);
+      console.error("Fetch error for Ollama models:", 
+        fetchError instanceof Error ? 
+          (fetchError.name === 'AbortError' ? 'Request timed out' : fetchError.message) : 
+          'Unknown error');
       return [];
     }
-    const data = await response.json();
-    return data.models.map((model: { name: string }) => ({
-      id: `ollama-${model.name}`,
-      name: model.name,
-      provider: "ollama",
-      modelName: model.name,
-      description: "Ollama model"
-    }));
   } catch (error) {
     console.error("Error fetching Ollama models:", error);
     return [];
@@ -98,7 +117,7 @@ export const loadSelectedProvider = (): SupportedModel['provider'] => {
 export const loadSelectedModel = (): SupportedModel | null => {
   const savedModelId = localStorage.getItem(SELECTED_MODEL_KEY);
   const savedProvider = loadSelectedProvider();
-  
+
   // If we have a saved model ID, try to find it in available models
   if (savedModelId) {
     // Check if it's an Ollama model
@@ -111,12 +130,12 @@ export const loadSelectedModel = (): SupportedModel | null => {
         description: 'Ollama model'
       };
     }
-    
+
     // Otherwise look in available models
     const model = AVAILABLE_MODELS.find(m => m.id === savedModelId);
     if (model) return model;
   }
-  
+
   // If no model found or no saved ID, find first model matching the saved provider
   if (savedProvider === 'ollama') {
     // Return a default Ollama model
@@ -128,12 +147,12 @@ export const loadSelectedModel = (): SupportedModel | null => {
       description: 'Ollama model'
     };
   }
-  
+
   const providerModels = AVAILABLE_MODELS.filter(m => m.provider === savedProvider);
   if (providerModels.length > 0) {
     return providerModels[0];
   }
-  
+
   // Final fallback: return first available model
   return AVAILABLE_MODELS[0];
 };
@@ -178,25 +197,25 @@ export const callGeminiDirectly = async (
 ): Promise<GeminiModelResponse> => {
   try {
     console.log("Using Gemini model:", modelName, "with prompt length:", prompt.length);
-    
+
     // If the prompt is too large, truncate it
     const MAX_GEMINI_CHARS = 300000; // Higher limit for Gemini
     let processedPrompt = prompt;
-    
+
     if (prompt.length > MAX_GEMINI_CHARS) {
       console.log(`Prompt too large (${prompt.length} chars) for Gemini, truncating to ${MAX_GEMINI_CHARS} chars`);
-      processedPrompt = prompt.substring(0, MAX_GEMINI_CHARS) + 
+      processedPrompt = prompt.substring(0, MAX_GEMINI_CHARS) +
         "\n\n[Content truncated due to length limitations. Please use a more specific query or select fewer files.]";
     }
-    
+
     const ai = initializeGeminiClient(apiKey);
-    
+
     try {
       const response = await ai.models.generateContent({
         model: modelName,
         contents: processedPrompt
       });
-      
+
       return {
         text: response.text || "",
         usage: {
@@ -207,7 +226,7 @@ export const callGeminiDirectly = async (
       };
     } catch (genError) {
       console.error("Error in Gemini content generation:", genError);
-      
+
       // Attempt with fallback model if available
       if (modelName !== "gemini-1.5-flash-latest") {
         console.log("Attempting with fallback Gemini model: gemini-1.5-flash-latest");
@@ -215,7 +234,7 @@ export const callGeminiDirectly = async (
           model: "gemini-1.5-flash-latest",
           contents: processedPrompt
         });
-        
+
         return {
           text: fallbackResponse.text || "",
           usage: {
@@ -225,7 +244,7 @@ export const callGeminiDirectly = async (
           }
         };
       }
-      
+
       // If we get here, the fallback also failed or we were already using it
       throw genError;
     }
@@ -237,7 +256,7 @@ export const callGeminiDirectly = async (
 
 export const createChatModel = async (modelId: string) => {
   console.log("createChatModel called with modelId:", modelId);
-  
+
   // Special handling for Ollama models
   if (modelId.startsWith('ollama-')) {
     console.log("Creating Ollama chat model");
@@ -253,7 +272,7 @@ export const createChatModel = async (modelId: string) => {
   // Regular handling for other models
   const model = AVAILABLE_MODELS.find(m => m.id === modelId);
   console.log("Found model:", model?.name || "null", "with provider:", model?.provider || "null");
-  
+
   if (!model) {
     console.error(`Model ${modelId} not found in available models`);
     throw new Error(`Model ${modelId} not found. Please select a valid model.`);
@@ -264,7 +283,7 @@ export const createChatModel = async (modelId: string) => {
   const apiKeys = settings ? JSON.parse(settings).apiKeys || {} : {};
   const apiKey = apiKeys[model.provider];
   console.log("Using provider:", model.provider, "API key available:", !!apiKey);
-  
+
   if (!apiKey) {
     console.error(`No API key found for provider: ${model.provider}`);
     throw new Error(
@@ -287,7 +306,7 @@ export const createChatModel = async (modelId: string) => {
         // Add any other methods you need for compatibility
       };
     }
-    
+
     // For other providers, use LangChain as before
     switch (model.provider) {
       case 'openai':
@@ -298,7 +317,7 @@ export const createChatModel = async (modelId: string) => {
           temperature: 0.7,
           maxTokens: 4000, // Set reasonable token limits
         });
-      
+
       case 'anthropic':
         console.log("Creating Anthropic chat model with model name:", model.modelName);
         return new ChatAnthropic({
@@ -307,7 +326,7 @@ export const createChatModel = async (modelId: string) => {
           temperature: 0.7,
           maxTokens: 4000, // Set reasonable token limits
         });
-      
+
       case 'groq':
         console.log("Creating Groq chat model with model name:", model.modelName);
         return new ChatGroq({
@@ -316,7 +335,7 @@ export const createChatModel = async (modelId: string) => {
           temperature: 0.7,
           maxTokens: 4000, // Set reasonable token limits
         });
-      
+
       default:
         console.error(`Unsupported provider: ${model.provider}`);
         throw new Error(`Unsupported provider: ${model.provider}`);

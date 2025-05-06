@@ -6,7 +6,7 @@ interface LeftPanelProps {
   conversations: Conversation[];
   activeConversationId: string | null;
   onSelectConversation: (id: string) => void;
-  onNewChat: () => void;
+  onNewChat: () => Promise<void>;
   onDeleteConversation: (id: string) => void; 
 }
 
@@ -22,10 +22,18 @@ const LeftPanel: React.FC<LeftPanelProps> = ({
     onDeleteConversation(id);
   };
   
+  const handleNewChat = async () => {
+    try {
+      await onNewChat();
+    } catch (error) {
+      console.error('Error creating new chat:', error);
+    }
+  };
+  
   return (
     <div className={styles['left-panel']}> 
       <div className={styles['left-panel-header']}>
-        <button className={styles['new-chat-button']} onClick={onNewChat}> 
+        <button className={styles['new-chat-button']} onClick={handleNewChat}> 
           <span className={styles['icon']}>+</span>
           <span>New chat</span>
         </button>
